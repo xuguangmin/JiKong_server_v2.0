@@ -1,0 +1,33 @@
+TARGET = libthread.a
+PREFIX_LIB = /usr/lib
+PREFIX_INCLUDE = /usr/local/include
+INSTALL_HEADERS = 
+
+CC = arm-none-linux-gnueabi-gcc
+INCLUDES = 
+LIBS = 
+CFLAGS = -g
+LINKFLAGS =
+
+C_SOURCES += thread.c
+C_OBJS = $(patsubst %.c, %.o, $(C_SOURCES))
+
+.c.o:
+	$(CC) -c -o $*.o $(CFLAGS) $(INCLUDES) $*.c
+
+$(TARGET): $(C_OBJS)
+	rm -f $@
+	ar cr $@ $(C_OBJS)
+	ranlib $@
+
+clean:
+	rm -f $(C_OBJS) 
+	rm -f $(TARGET)
+
+install: $(TARGET)
+	cp $(TARGET) $(PREFIX)
+
+uninstall:
+	rm -f $(PREFIX)/$(TARGET)
+
+rebuild: clean $(TARGET) 

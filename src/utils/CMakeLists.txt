@@ -1,0 +1,11 @@
+CONFIGURE_FILE(share_type.h      ${CUSTOM_INCLUDE_DIR_MAIN}/share_type.h)
+CONFIGURE_FILE(util_func.h       ${CUSTOM_INCLUDE_DIR_MAIN}/util_func.h)
+CONFIGURE_FILE(util_log.h        ${CUSTOM_INCLUDE_DIR_MAIN}/util_log.h)
+CONFIGURE_FILE(util_queue.h      ${CUSTOM_INCLUDE_DIR_MAIN}/util_queue.h)
+CONFIGURE_FILE(util_list.h       ${CUSTOM_INCLUDE_DIR_MAIN}/util_list.h)
+CONFIGURE_FILE(ring_list.h       ${CUSTOM_INCLUDE_DIR_MAIN}/ring_list.h)
+CONFIGURE_FILE(ring_list_buf.h   ${CUSTOM_INCLUDE_DIR_MAIN}/ring_list_buf.h)
+CONFIGURE_FILE(sysconfig.h       ${CUSTOM_INCLUDE_DIR_MAIN}/sysconfig.h)
+
+AUX_SOURCE_DIRECTORY(. UTILS_SRC_LIST)
+ADD_LIBRARY(utils STATIC  ${UTILS_SRC_LIST})

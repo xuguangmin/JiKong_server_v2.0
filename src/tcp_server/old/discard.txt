@@ -1,0 +1,103 @@
+/* 从机接收来自主机服务器的信息
+void tps_slave_client_thread_func_execute(int sock, CREATE_CLIENT_MSG *cToSInfo)
+{
+	FLXByte recBuffer[RECV_DATA_BUFFER];
+	FLXByte mainRecBuffer[RECV_DATA_BUFFER * 2] = {0};
+	FLXInt32 iRetrun, recvLen = 0;
+
+    while(TRUE)
+    {
+		printf("tps_slave_client_thread_func_execute data ...\n");
+		memset(recBuffer, 0, RECV_DATA_BUFFER);
+		iRetrun = recv(sock, recBuffer, RECV_DATA_BUFFER, 0);
+
+		printf("iRetrun = %d\n",iRetrun);
+		if (iRetrun > 0)
+		{
+		 	memcpy(&mainRecBuffer[recvLen],recBuffer,iRetrun);
+			recvLen += iRetrun;
+
+			while(recvLen >=7)
+			{
+				proa_analyse_data_from_master(mainRecBuffer, &recvLen);
+			}
+		}
+		else //if (iRetrun <= 0 )
+		{
+			int ret;
+			printf("sock = %d,  socket error.\n", sock);
+			close(sock);
+			sock = -1;
+			ret = tps_slave_client_thread_func(cToSInfo);
+			return;
+		}
+    }
+}
+*/
+/* 创建从机客户端连接主机服务器
+FLXInt32 tps_slave_client_thread_func(CREATE_CLIENT_MSG *cToSInfo)
+{
+	if ((g_slave_client_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
+		fprintf(stderr, "Create socket fail: %s\n", strerror(errno));
+		return -1;
+	}
+
+	struct sockaddr_in remote_ipv4_address;
+	memset(&remote_ipv4_address, 0, sizeof(remote_ipv4_address));
+	remote_ipv4_address.sin_family = AF_INET;
+	remote_ipv4_address.sin_port = htons(cToSInfo->serverPort);
+	inet_pton(AF_INET,cToSInfo->serverIp, (void *)&(remote_ipv4_address.sin_addr));
+	fprintf(stdout, "Create socket sucess sock= %d\n", g_slave_client_socket);
+
+	while(1)
+	{
+		printf("Enter connect function.\n");
+		connetionOrNotFlag = 0;
+		if(connect(g_slave_client_socket,(struct sockaddr *)&remote_ipv4_address, sizeof(remote_ipv4_address)) == 0)
+		{
+			fprintf(stdout, "Connected to server:%d  %s\n",(*cToSInfo).serverPort,(*cToSInfo).serverIp);
+			break;
+		}
+		fprintf(stderr, "Connect to server:%d failed: %s\n",(*cToSInfo).serverPort, strerror(errno));
+		printf("wait connect ...\n");
+		sleep(2);
+	}
+	printf("OK\n");
+	connetionOrNotFlag = 1;
+	tps_slave_client_thread_func_execute(g_slave_client_socket, cToSInfo);
+
+	printf("Exit connect function.");
+	return 0;
+}
+*/
+
+else if(SERVER_TYPE_SLAVE == server_type)
+	{
+		/*
+		int len;
+		FLXThread pid;
+		CREATE_CLIENT_MSG *cToSInfo = (CREATE_CLIENT_MSG *)malloc(sizeof(CREATE_CLIENT_MSG));
+		if(!cToSInfo)
+			return 0;
+
+		len = strlen(server_config->dst_server_ip);
+		cToSInfo->serverIp = (char *)malloc(len + 1);
+		strcpy(cToSInfo->serverIp, server_config->dst_server_ip);
+		cToSInfo->serverIp[len] = '\0';
+		cToSInfo->serverPort = server_config->dst_server_port;
+*/
+		/* 从机的客户端线程
+		iRet = thread_create(&pid, NULL, (void *)tps_slave_client_thread_func, (void*)cToSInfo);
+		if (iRet != 0)
+		{
+			MSG_OUT("thread create error\n");
+			return 0;
+		}*/
+
+		if(!tps_tcp_slave_client_start(server_config->dst_server_ip, server_config->dst_server_port, proa_analyse_data_from_master))
+		{
+			CCC_LOG_OUT("tps_tcp_slave_client_start\n");
+			return 0;
+		}
+	}

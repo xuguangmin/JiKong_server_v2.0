@@ -1,0 +1,3 @@
+CONFIGURE_FILE(flxthread.h  ${CUSTOM_INCLUDE_DIR_FLX_COMMON}/flxthread.h)
+SET(THD_SRC_LIST thread.c)
+ADD_LIBRARY(thread STATIC ${THD_SRC_LIST})

@@ -1,0 +1,3 @@
+CONFIGURE_FILE(app_console.h        ${CUSTOM_INCLUDE_DIR_MAIN}/app_console.h)
+AUX_SOURCE_DIRECTORY(. CON_SRC_LIST)
+ADD_LIBRARY(console  ${CON_SRC_LIST})

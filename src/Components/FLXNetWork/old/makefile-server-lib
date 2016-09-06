@@ -1,0 +1,33 @@
+TARGET = libtcpserver.so
+PREFIX_LIB = /usr/lib
+PREFIX_INCLUDE = /usr/local/include
+INSTALL_HEADERS = 
+
+CC = arm-linux-gcc
+INCLUDES = 
+LIBS = 
+CFLAGS = -g -O3 -fPIC
+LINKFLAGS = -shared
+
+C_SOURCES += tcpserver.c 
+C_OBJS = $(patsubst %.c, %.o, $(C_SOURCES))
+
+.c.o:
+	$(CC) -c -o $*.o $(CFLAGS) $(INCLUDES) $*.c
+
+compile: $(C_OBJS)
+	$(CC)     $(LINKFLAGS) -o $(TARGET) $^ $(LIBS)
+
+clean:
+	rm -f $(C_OBJS)
+	rm -f $(TARGET)
+
+install: $(TARGET)
+	cp $(TARGET) $(PREFIX_LIB)
+	cp $(INSTALL_HEADERS) $(PREFIX_INCLUDE)
+
+uninstall:
+	rm -f $(PREFIX_LIB)/$(TARGET)
+	cd $(PREFIX_INCLUDE); rm -f $(INSTALL_HEADERS)
+
+rebuild: clean compile 
