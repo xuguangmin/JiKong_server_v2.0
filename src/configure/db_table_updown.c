@@ -140,7 +140,7 @@ static int sqlite_callback_res_file(void *data,int col_count,char **col_values,c
 	return 0;
 }
 /*
- * 从数据库中取配置信息
+ * 从数据库中取配置信息，从数据库获取文件名
  *
  * 返回值：1成功，否则失败
  */
@@ -190,7 +190,7 @@ const char *db_table_updown_res_filename(const char *key_name)
 {
 	return db_table_updown_get_value(key_name);
 }
-
+//获取上传文件列表
 int db_table_updown_file_all(UPDOWN_FILE *lp_updown_file)
 {
 	int k,ix;

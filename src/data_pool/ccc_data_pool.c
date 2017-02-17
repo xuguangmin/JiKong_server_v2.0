@@ -118,7 +118,7 @@ int data_pool_add_node(int connect_type, int connect_no)
 }
 
 int data_pool_init(data_pool_callback callback)
-{
+{	// do nothing
 	if(!packet_pool_init())
 		return 0;
 	if(!cccdp_recv_init(callback_cccdp_recv))

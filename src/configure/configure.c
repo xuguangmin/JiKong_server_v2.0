@@ -295,16 +295,16 @@ static int load_external_configure(const char *config_name)
 		printf("%s db_config_check() error.\n", __FUNCTION__);
 		return 0;
 	}
-
+	//从数据库获取上传的文件名和程序配置信息
 	if(!db_config_load())
 	{
 		printf("%s db_config_load() error.\n", __FUNCTION__);
 		return 0;
 	}
-
+	//获取server port and ip
 	if(!db_table_main_server_config(&g_server_config)) return 0;
 	print_server_info();
-
+	//获取上传文件列表名
 	if(!db_table_updown_file_all(&g_updown_file)) return 0;
 	print_updown_file_info();
 	return 1;
@@ -312,15 +312,16 @@ static int load_external_configure(const char *config_name)
 
 int load_configure(const char *config_name)
 {
-	init_config();
+	init_config();	//初始化一个队列
 	if(!load_external_configure(config_name))
 		return 0;
-
+	//设置ip和mask
 	if(!set_ipaddr_netmask2(1, db_config_get_config(SQLITE_KEY_IP_ADDRESS), db_config_get_config(SQLITE_KEY_IP_MASK)))
 	{
 		printf("%s set LAN(1) IP error.\n", __FUNCTION__);
 		return 0;
 	}
+	//设置ip2和mask2
 	if(!set_ipaddr_netmask2(2, db_config_get_config(SQLITE_KEY_IP_ADDRESS2), db_config_get_config(SQLITE_KEY_IP_MASK2)))
 	{
 		printf("%s set LAN(2) IP error.\n", __FUNCTION__);

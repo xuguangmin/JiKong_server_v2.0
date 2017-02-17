@@ -177,6 +177,7 @@ int connect_manager_delete(int connect_type, int connect_no)
 int connect_manager_init(connect_manager_callback callback)
 {
 	FLXThread pid;
+	//根据g_connecting_node_head节点创建socket连接，并将socket加入g_epfd
 	connect_list_init(callback_by_connect_list);
 
 	g_epfd = epoll_create(EPOLL_MAX_COUNT);

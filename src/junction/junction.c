@@ -36,19 +36,19 @@ int stop_ccc()
 }
 
 int start_ccc()
-{
+{	//set server ip and port 
 	if(!get_cfg_server(&g_server_config))
 	{
 		printf("get server configure error.\n");
 		return 0;
 	}
-
+	//  set 主机服务类型，主机、从机、单机模式
 	if(!protocol_adapter_init(g_server_config.server_type))
 		return 0;
 
 	if(!data_pool_init(callback_recv_data_from_data_pool))
 		return 0;
-
+	//完成了socket的创建和数据的接收存储
 	if(!connect_manager_init(callback_by_connect_manager))
 		return 0;
 

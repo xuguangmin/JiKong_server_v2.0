@@ -333,6 +333,7 @@ static int internal_polling_connecting_node(CONNECTING_NODE *head)
 		node = node->next;
 		result += 1;
 	}
+	//返回socket连接个数
 	return result;
 }
 
@@ -346,7 +347,7 @@ static int polling_connecting_node()
 }
 
 /*
- * 连接线程
+ * 创建socket连接线程
  */
 void thread_func_connecting(void *param)
 {
@@ -355,7 +356,7 @@ void thread_func_connecting(void *param)
 		sem_wait(&g_connecting_list_sem);
 		while(1)
 		{
-			/* 只要队列中有节点，就一直循环 */
+			/* 只要队列中有节点，就一直循环, 创建socket句柄或连接 */
 			if(polling_connecting_node() <= 0)
 				break;
 			connecting_node_delete_connected();

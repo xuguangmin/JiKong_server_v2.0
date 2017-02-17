@@ -192,7 +192,7 @@ static int sqlite_callback_cfg_info(void *data,int col_count,char **col_values,c
 	return 0;
 }
 /*
- * 从数据库中取配置信息
+ * 从数据库中取配置信息，从数据库获取程序配置信息
  *
  * 返回值：1成功，否则失败
  */

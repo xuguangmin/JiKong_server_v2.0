@@ -195,7 +195,7 @@ const char *db_config_get_config(const char *key_name)
 }
 
 /*
- * 从数据库中取配置信息
+ * 从数据库中取配置信息，数据库中有两张表fileNameTab和main表
  *
  * 返回值：1成功，否则失败
  */
@@ -203,10 +203,10 @@ int db_config_load()
 {
 	if(!db_config_open())
 		return 0;
-
+	//获取上传的文件名
 	if(!db_table_updown_load(g_db_config, SQLITE_TABLE_UPDOWN))
 		return 0;
-
+	//获取程序配置数据
 	return db_table_main_load(g_db_config, SQLITE_TABLE_MAIN);
 }
 int db_config_load_main()
@@ -231,11 +231,11 @@ int db_config_check(const char *db_name)
 		return 0;
 
 	//if (0 == access(db_name, F_OK)){}
-
+	//保存数据库文件名，malloc
 	g_db_config_filename = util_strcpy(db_name);
 	if(!db_config_open())
 		return 0;
-
+	//检查数据库表是否存在，否则创建数据库表
 	for(k = 0; ;k++)
 	{
 		if(db_config_table_list[k].table_name == NULL)
