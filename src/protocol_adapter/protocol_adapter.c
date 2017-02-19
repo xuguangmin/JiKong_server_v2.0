@@ -687,14 +687,14 @@ void callback_recv_data_from_network(int data_source, unsigned char *buffer, int
 
 	switch(data_source)
 	{
-	case DATA_SOURCE_PAD_OR_0:
+	case DATA_SOURCE_PAD_OR_0://数据来自pad或者设计器等客户端
 		proa_analyse_data_from_pad_or_0(clientInfo, &pdu);
 		break;
 
-	case DATA_SOURCE_SLAVE_SERVER:
+	case DATA_SOURCE_SLAVE_SERVER://数据来自从机
 		proa_analyse_data_from_slave_server(clientInfo->sock, &pdu);
 		break;
-	case DATA_SOURCE_SLAVE_CLIENT:
+	case DATA_SOURCE_SLAVE_CLIENT://数据来自从机上的客户端连接
 		proa_analyse_data_from_slave_client(&pdu);
 		break;
 	}

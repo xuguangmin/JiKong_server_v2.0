@@ -33,6 +33,7 @@ static int output_client_recv_data(int data_source, unsigned char *buffer, int *
 	if(g_tps_client_callback)
 	{
 		int old_data_len = *data_len;
+		//最终调用callback_recv_data_from_network
 		g_tps_client_callback(data_source, buffer, data_len, clientInfo);
 
 		/* 如果数据长度没变，说明剩下的数据中已经没有完整的数据包了 */
@@ -305,7 +306,7 @@ static void thread_func_client_pad_or_0(void *param)
 			recvLen += iRetrun;
 
 			while(recvLen >= 9)
-			{
+			{	//最终由callback_recv_data_from_network完成数据协议的处理
 				if(!output_client_recv_data(DATA_SOURCE_PAD_OR_0, mainRecBuffer, &recvLen, &clientInfo))
 					break;
 			}
@@ -324,9 +325,9 @@ int tps_reg_client_pad_or_0(FLXSocket sock)
 {
 	FLXThread pid;
 	FLX_CLIENT_NODE flx_client_node;
-	if(!(flx_client_node = add_flx_client_node(sock)))
+	if(!(flx_client_node = add_flx_client_node(sock)))//将socket加入g_flx_client_node_head链表
 		return 0;
-
+	//监听接收客户端数据
 	if(thread_create(&pid, NULL, (void *)thread_func_client_pad_or_0, flx_client_node) != 0)
 	{
 		delete_flx_client_node(sock);
@@ -481,7 +482,4 @@ void tps_release_all_client(void)
 
 int tps_client_manage_init(tps_client_callback callback)
 {
-	g_tps_client_callback = callback;
-	return 1;
-}
-
+	g_tps_client_call                                   

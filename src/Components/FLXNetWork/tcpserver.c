@@ -111,6 +111,7 @@ static void *acceptClientThread(void * param)
 		 if (callback != NULL)
 		 {
 		 	printf("new socket client = %d\n", (int)(*iSocket_client));
+			//传入回调函数callback_server_accept_client_pad_or_0,注册套接字，并接收数据
  			callback(iSocket_client, iEP_client);   /* 如果返回不成功值，是否应该关闭该sock ??? */
 		 }
 

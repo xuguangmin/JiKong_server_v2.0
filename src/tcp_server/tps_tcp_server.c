@@ -233,9 +233,8 @@ int network_manager_init(SERVER_CONFIG *server_config, network_recv_data callbac
 		}
 	}
 
-	g_network_recv_data = callback;
-	tps_client_manage_init(callback_recv_data_from_client);
-
+	g_network_recv_data = callback;//callback_recv_data_from_network
+	tps_client_manage_init(callback_recv_data_from_client);//最终调用了上面的g_network_recv_data完成数据接收
 	if(!connect_http_init())
 		return 0;
 
