@@ -658,6 +658,7 @@ static int proa_analyse_data_from_slave_client(PDU *pdu)
 	return process_protocol_pdu(NULL, pdu);
 }
 
+//数据来自pad或者设计器等客户端
 static int proa_analyse_data_from_pad_or_0(CLIENT_INFO_STRU *clientInfo, PDU *pdu)
 {
 	if(PCS_CLIENT_EVENT == pdu->cmd) /* 0x19 数据转发到其他设备 */

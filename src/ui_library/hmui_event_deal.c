@@ -28,6 +28,16 @@ int InitializeControls()
 	return 0;
 }
 
+/*
+ * pad数据处理
+ * 这些数据来自pad
+ *
+ * 参数：
+ *   senderId 控件id
+ *   event    pad事件类型，单击、多选。。。   
+ *   data   
+ *   len  
+ */
 int ProcessEvent(int senderId, int event, char *data, int len)
 {
 	int iRet = 0;
